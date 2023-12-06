@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: moj-nginx-configmap
+data:
+  nginx_version: "1.21.1"
+  nginx_user: "nginx"
