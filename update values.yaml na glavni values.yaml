@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+ENV_ID="${1}"
+NAMESPACE="${2}"
+
+
+WORKDIR="$(dirname "${BASH_SOURCE[0]:-$0}")/"
+cd "${WORKDIR}" || exit 1
+
+helm upgrade nginx ../../charts/nginx \
+                    --install --create-namespace --namespace "${NAMESPACE}" \
+                    -f values.yaml \
+                    -f values-${ENV_ID}.yaml
