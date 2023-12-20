@@ -1,0 +1,49 @@
+1. Dodavanje matrica na nginx 
+metrics:
+  ## @param metrics.enabled Start a Prometheus exporter sidecar container
+  ##
+  enabled: false
+
+Samo se poveze kada podignemo Prometheus =Tako je nginx konfigurisano ali kada ocemo nesto drugo to moramo mi samostalno konfig
+
+
+2.Dodavanje secret.yaml na login page od Grafane
+  
+ - Napravili secret.yaml :
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+  namespace: namespace7
+type: Opaque
+data:
+  admin-user: c2FtaXI=
+  admin-password: cGFzc3dvcmQ=
+
+- kubectl apply -f secret.yaml   = Odradili apply na cluster
+
+  -Preko value dodali tj povezali secret pod imenom my-secret na grafanu u grafana value.yaml do odradili sa scriptom
+  envFromSecrets: 
+   - name: my-secret 
+     optional: true
+
+
+
+3. Dodavanje Ingressa na grafanu povezivanje = preko grafana value podigli ingress koji vezuje ingress i grafanu
+   Mozemo prisutpi grafani:grafana-example.local
+
+
+  ingress:
+  enabled: true
+  ingressClassName: nginx
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+  labels: {}
+  path: /
+  pathType: Prefix
+  hosts:
+    - grafana-example.local
+
+
